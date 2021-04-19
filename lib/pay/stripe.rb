@@ -17,6 +17,7 @@ module Pay
       autoload :SubscriptionDeleted, "pay/stripe/webhooks/subscription_deleted"
       autoload :SubscriptionRenewing, "pay/stripe/webhooks/subscription_renewing"
       autoload :SubscriptionUpdated, "pay/stripe/webhooks/subscription_updated"
+      autoload :SubscriptionPaid, "pay/stripe/webhooks/subscription_paid"
     end
 
     extend Env
@@ -60,6 +61,14 @@ module Pay
 
         # Payment action is required to process an invoice
         events.subscribe "stripe.invoice.payment_action_required", Pay::Stripe::Webhooks::PaymentActionRequired.new
+        
+        # Payment action for update subscription status
+        # TODO: Create
+        # events.subscribe "stripe.invoice.update", Pay::Stripe::Webhooks::SubscriptionPaid.new
+
+        # Payment action for update subscription status
+        # TODO: Create
+        events.subscribe "stripe.invoice.paid", Pay::Stripe::Webhooks::SubscriptionPaid.new
 
         # If a subscription is manually created on Stripe, we want to sync
         events.subscribe "stripe.customer.subscription.created", Pay::Stripe::Webhooks::SubscriptionCreated.new

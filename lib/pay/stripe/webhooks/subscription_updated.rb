@@ -4,7 +4,8 @@ module Pay
       class SubscriptionUpdated
         def call(event)
           object = event.data.object
-          subscription = Pay.subscription_model.find_or_create_by(processor: :stripe, processor_id: object.id)
+          subscription = Pay.subscription_model.find_by(processor: :stripe, processor_id: object.id)
+
           return if subscription.nil?
 
           # Delete any subscription attempts that have expired
